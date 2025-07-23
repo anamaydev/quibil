@@ -1,11 +1,17 @@
+import {BrowserRouter, Routes, Route} from "react-router-dom"
 import { ThemeProvider } from "@/components/theme-provider"
+import Layout from "./components/Layout"
+import Login from "./pages/Login"
 
 const App = () => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <main className="min-h-dvh flex flex-col justify-center items-center">
-        App
-      </main>
+      <BrowserRouter>
+        <Routes>
+          <Route path="login" element={<Login/>} />
+          <Route path="/" element={<Layout/>}/>
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   )
 }
