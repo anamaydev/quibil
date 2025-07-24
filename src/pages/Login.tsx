@@ -7,7 +7,7 @@ import {IconGoogle, IconMeta, Logo} from "@/components/icons";
 
 const Login = () => {
   return (
-    <main className="relative min-h-dvh flex justify-center items-center">
+    <main className="relative min-h-dvh flex justify-center items-center px-6">
       <Logo className="absolute top-20" />
       <Card className="w-full max-w-sm flex flex-col">
         <CardHeader className="w-full">
