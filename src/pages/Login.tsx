@@ -1,11 +1,52 @@
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
-import {Label} from "@/components/ui/label"
-import {Input} from "@/components/ui/input"
-import {Button} from "@/components/ui/button"
+import {useState, useEffect} from "react";
+import type {FormEvent} from "react";
 
+import {auth} from "@/lib/firebase.ts";
+import {createUserWithEmailAndPassword} from "firebase/auth"
+
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
 import {IconGoogle, IconMeta, Logo} from "@/components/icons";
 
+type AuthData = {
+  email: string,
+  password: string,
+}
+
 const Login = () => {
+  const [authData, setAuthData] = useState<AuthData>({email: "", password: ""});
+  // const [userLoggedIn, setUserLoggedIn] = useState(localStorage.getItem("userLoggedIn") ? localStorage.getItem("userLoggedIn"):false);
+
+  /* logging in the authData for debugging */
+  useEffect(()=>{
+    console.log("authData", authData);
+  },[authData]);
+
+  /* modify email property from authData on change*/
+  function handleEmailChange(value:string) {
+    setAuthData(prevAuthData => ({...prevAuthData, email: value}));
+  }
+
+  /* modify password property from authData on change*/
+  function handlePasswordChange(value:string) {
+    setAuthData(prevAuthData => ({...prevAuthData, password: value}));
+  }
+
+  async function handleSignUpWithEmailAndPassword(e:FormEvent<HTMLFormElement>){
+    e.preventDefault();
+    try{
+      const userCredential = await createUserWithEmailAndPassword(auth, authData.email, authData.password);
+      const user = userCredential.user;
+      console.log("user: ",user);
+      console.log("user.email: ",user.email);
+      console.log("userCredential: ",userCredential);
+    }catch(err){
+      console.error(err);
+    }
+  }
+
   return (
     <main className="relative min-h-dvh flex justify-center items-center px-6">
       <Logo className="absolute top-20" />
@@ -15,17 +56,26 @@ const Login = () => {
           <CardDescription className="text-sm">Enter your email below to create your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form action="/">
+          <form action="/" onSubmit={(e)=>handleSignUpWithEmailAndPassword(e)}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-3">
                 <Label>Email</Label>
-                <Input type="email" placeholder="mika@mouse.com"/>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="mika@mouse.com"
+                  onChange={(e)=>handleEmailChange(e.target.value)}
+                />
               </div>
               <div className="flex flex-col gap-3">
                 <Label>Password</Label>
-                <Input type="password"/>
+                <Input
+                  type="password"
+                  name="password"
+                  onChange={(e)=>handlePasswordChange(e.target.value)}
+                />
               </div>
-              <Button disabled type="submit" className="w-full">Create account</Button>
+              <Button type="submit" className="w-full">Create account</Button>
             </div>
           </form>
 
