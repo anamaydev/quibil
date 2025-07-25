@@ -1,0 +1,87 @@
+import {useState} from "react";
+import {Logo} from "@/components/icons";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import DatePicker from "@/components/DatePicker";
+import {Button} from "@/components/ui/button.tsx";
+
+type Tenant = {
+  firstName: string,
+  lastName: string,
+  email: string,
+  moveInDate: string,
+  flat: string,
+}
+
+const AddTenants = () => {
+  const [tenants, setTenants] = useState<Tenant>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    moveInDate: "",
+    flat: ""
+  });
+
+  return (
+    <main  className="relative min-h-dvh flex justify-center items-center px-6">
+      <Logo className="absolute top-20"/>
+      <Card className="w-full max-w-sm flex flex-col">
+        <CardHeader className="w-full">
+          <CardTitle className="font-semibold text-2xl">Tenant Information</CardTitle>
+          <CardDescription className="text-sm">Add minimum 3 tenants for better result</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form action="/">
+            <div className="flex flex-col gap-6">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col gap-3">
+                  <Label className="px-1">First Name</Label>
+                  <Input
+                    type="text"
+                    name="firstName"
+                    placeholder="Jake"
+                    onChange={(e)=>setTenants(prevTenants => ({...prevTenants, firstName: e.target.value}))}
+                  />
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Label className="px-1">Last Name</Label>
+                  <Input
+                    type="text"
+                    name="lastName"
+                    placeholder="Paralta"
+                    onChange={(e)=>setTenants(prevTenants => ({...prevTenants, lastName: e.target.value}))}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col gap-3">
+                <Label className="px-1">Email</Label>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="jakeparalta@email.com"
+                  onChange={(e)=>setTenants(prevTenants => ({...prevTenants, email: e.target.value}))}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <DatePicker/>
+                <div className="flex flex-col gap-3">
+                  <Label className="px-1">Flat</Label>
+                  <Input
+                    type="text"
+                    name="flatNumber"
+                    placeholder="A001"
+                    onChange={(e)=>setTenants(prevTenants => ({...prevTenants, flat: e.target.value}))}
+                  />
+                </div>
+              </div>
+              <Button type="submit" className="w-full">Add tenant</Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </main>
+  )
+}
+export default AddTenants
