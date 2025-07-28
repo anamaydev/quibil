@@ -1,6 +1,6 @@
 import {Navigate, Outlet} from 'react-router-dom';
 // import Layout from "@/components/Layout";
-import {useAuthContext} from "@/context/AuthContext.tsx";
+import {useAuthContext} from "@/context/useAuthContext";
 
 const AuthRequired = () => {
   const {user, loading} = useAuthContext();

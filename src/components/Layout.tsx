@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom"
-import {useAuthContext} from "@/context/AuthContext.tsx";
+import {useAuthContext} from "@/context/useAuthContext";
 
 const Layout = () => {
   const {logOut} = useAuthContext();

@@ -4,7 +4,7 @@ import Layout from "./components/Layout"
 import Login from "./pages/Login"
 import AuthRequired from "@/components/AuthRequired.tsx";
 import AddTenants from "./pages/AddTenants"
-import AuthProvider from "@/context/AuthContext"
+import AuthProvider from "@/context/AuthProvider"
 
 const App = () => {
   return (
