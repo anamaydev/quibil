@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Logo} from "@/components/icons";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card";
 import {Label} from "@/components/ui/label";
@@ -22,6 +22,10 @@ const AddTenants = () => {
     moveInDate: "",
     flat: ""
   });
+
+  useEffect(() => {
+    console.log("tenants", tenants);
+  },[tenants])
 
   return (
     <main  className="relative min-h-dvh flex justify-center items-center px-6">
