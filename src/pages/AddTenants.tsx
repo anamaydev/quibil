@@ -6,6 +6,7 @@ import {Input} from "@/components/ui/input";
 import DatePicker from "@/components/DatePicker";
 import {Button} from "@/components/ui/button.tsx";
 import {useNavigate} from "react-router-dom";
+import {ChevronRight} from "lucide-react";
 
 type Tenant = {
   firstName: string,
@@ -88,7 +89,14 @@ const AddTenants = () => {
           </form>
         </CardContent>
       </Card>
-      <Button onClick={()=> navigate("/layout")}>Next Step</Button>
+      <Button
+        className="flex gap-0.5 justify-center items-center"
+        variant={"secondary"}
+        onClick={()=> navigate("/layout")}
+      >
+        <span>Next</span>
+        <ChevronRight className="translate-y-[1px]"/>
+      </Button>
     </main>
   )
 }
