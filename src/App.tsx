@@ -2,6 +2,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom"
 import { ThemeProvider } from "@/components/theme-provider"
 import Layout from "./components/Layout"
 import Login from "./pages/Login"
+import AuthRequired from "@/components/AuthRequired.tsx";
 import AddTenants from "./pages/AddTenants"
 import AuthProvider from "@/context/AuthContext"
 
@@ -12,8 +13,11 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login/>}/>
-            <Route path="/setup" element={<AddTenants/>}/>
-            <Route path="/" element={<Layout/>}/>
+            {/*<Route path="/layout" element={<Layout/>}/>*/}
+            <Route path="/" element={<AuthRequired/>}>
+              <Route path="/setup" element={<AddTenants/>}/>
+              <Route path="/layout" element={<Layout/>}/>
+            </Route>
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

@@ -5,6 +5,7 @@ import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import DatePicker from "@/components/DatePicker";
 import {Button} from "@/components/ui/button.tsx";
+import {useNavigate} from "react-router-dom";
 
 type Tenant = {
   firstName: string,
@@ -15,6 +16,7 @@ type Tenant = {
 }
 
 const AddTenants = () => {
+  const navigate = useNavigate();
   const [tenants, setTenants] = useState<Tenant>({
     firstName: "",
     lastName: "",
@@ -23,12 +25,13 @@ const AddTenants = () => {
     flat: ""
   });
 
+
   useEffect(() => {
     console.log("tenants", tenants);
   },[tenants])
 
   return (
-    <main  className="relative min-h-dvh flex justify-center items-center px-6">
+    <main  className="relative min-h-dvh flex flex-col gap-2 justify-center items-center px-6">
       <Logo className="absolute top-20"/>
       <Card className="w-full max-w-sm flex flex-col">
         <CardHeader className="w-full">
@@ -85,6 +88,7 @@ const AddTenants = () => {
           </form>
         </CardContent>
       </Card>
+      <Button onClick={()=> navigate("/layout")}>Next Step</Button>
     </main>
   )
 }

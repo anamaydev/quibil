@@ -1,4 +1,4 @@
-import {Link, Outlet} from "react-router-dom"
+import {Link} from "react-router-dom"
 import {useAuthContext} from "@/context/AuthContext.tsx";
 
 const Layout = () => {
@@ -10,7 +10,6 @@ const Layout = () => {
         <Link to="/setup">Add Tenants</Link>
         <button className="bg-white rounded px-2 text-black cursor-pointer" onClick={logOut}>Log Out</button>
       </div>
-      <Outlet/>
     </main>
   )
 }
