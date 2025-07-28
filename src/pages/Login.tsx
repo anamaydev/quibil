@@ -1,8 +1,9 @@
-import {useState, useEffect} from "react";
-import type {FormEvent} from "react";
+import {useState, useEffect, type FormEvent} from "react";
+import {useAuthContext} from "@/context/AuthContext.tsx";
+import {useNavigate} from "react-router-dom";
 
-import {auth} from "@/lib/firebase.ts";
-import {createUserWithEmailAndPassword} from "firebase/auth"
+// import {auth} from "@/lib/firebase.ts";
+// import {createUserWithEmailAndPassword} from "firebase/auth"
 
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
 import {Label} from "@/components/ui/label";
@@ -16,7 +17,9 @@ type AuthData = {
 }
 
 const Login = () => {
+  const {signUpWithEmailAndPassword} = useAuthContext();
   const [authData, setAuthData] = useState<AuthData>({email: "", password: ""});
+  const navigate = useNavigate();
   // const [userLoggedIn, setUserLoggedIn] = useState(localStorage.getItem("userLoggedIn") ? localStorage.getItem("userLoggedIn"):false);
 
   /* logging in the authData for debugging */
@@ -34,16 +37,27 @@ const Login = () => {
     setAuthData(prevAuthData => ({...prevAuthData, password: value}));
   }
 
-  async function handleSignUpWithEmailAndPassword(e:FormEvent<HTMLFormElement>){
+  // async function handleSignUpWithEmailAndPassword(e:FormEvent<HTMLFormElement>){
+  //   e.preventDefault();
+  //   try{
+  //     const userCredential = await createUserWithEmailAndPassword(auth, authData.email, authData.password);
+  //     const user = userCredential.user;
+  //     console.log("user: ",user);
+  //     console.log("user.email: ",user.email);
+  //     console.log("userCredential: ",userCredential);
+  //   }catch(err){
+  //     console.error(err);
+  //   }
+  // }
+
+
+  async function handleSignUpWithEmailAndPassword(e: FormEvent<HTMLFormElement>){
     e.preventDefault();
     try{
-      const userCredential = await createUserWithEmailAndPassword(auth, authData.email, authData.password);
-      const user = userCredential.user;
-      console.log("user: ",user);
-      console.log("user.email: ",user.email);
-      console.log("userCredential: ",userCredential);
-    }catch(err){
-      console.error(err);
+      await signUpWithEmailAndPassword(authData.email, authData.password);
+      navigate("/setup");
+    }catch(error){
+      console.log(error);
     }
   }
 
