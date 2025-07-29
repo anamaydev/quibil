@@ -5,6 +5,8 @@ type AuthContextType = {
   user: User | null,
   loading: boolean,
   signUpWithEmailAndPassword: (email: string, password: string) => Promise<UserCredential>,
+  signInWithGoogle: () => Promise<UserCredential>,
+  signInWithMeta: () => Promise<UserCredential>,
   logOut: () => Promise<void>
 }
 

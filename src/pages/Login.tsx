@@ -14,7 +14,7 @@ type AuthData = {
 }
 
 const Login = () => {
-  const {signUpWithEmailAndPassword} = useAuthContext();
+  const {signUpWithEmailAndPassword, signInWithGoogle, signInWithMeta} = useAuthContext();
   const [authData, setAuthData] = useState<AuthData>({email: "", password: ""});
   const navigate = useNavigate();
 
@@ -38,6 +38,26 @@ const Login = () => {
     try{
       await signUpWithEmailAndPassword(authData.email, authData.password);
       navigate("/setup");
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  async function handleSignInWithGoogle(){
+    try{
+      const currentUserCredentials = await signInWithGoogle();
+      if(currentUserCredentials?.user.metadata.creationTime === currentUserCredentials.user?.metadata.lastSignInTime) navigate("/setup");
+      else navigate("/layout");
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  async function handleSignInWithMeta(){
+    try{
+      const currentUserCredentials = await signInWithMeta();
+      if(currentUserCredentials?.user.metadata.creationTime === currentUserCredentials.user?.metadata.lastSignInTime) navigate("/setup");
+      else navigate("/layout");
     }catch(error){
       console.log(error);
     }
@@ -85,10 +105,21 @@ const Login = () => {
           </div>
         </CardContent>
         <CardFooter className="grid grid-cols-2 gap-4">
-          <Button variant="outline" type="button" className="w-full">
+          <Button
+            variant="outline"
+            type="button"
+            className="w-full cursor-pointer"
+            onClick={handleSignInWithGoogle}
+          >
             <IconGoogle/>
           </Button>
-          <Button variant="outline" type="button" className="w-full">
+          <Button
+            variant="outline"
+            type="button"
+            className="w-full cursor-pointer"
+            onClick={handleSignInWithMeta}
+            disabled
+          >
             <IconMeta/>
           </Button>
         </CardFooter>
