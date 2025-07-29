@@ -1,10 +1,11 @@
-import {BrowserRouter, Routes, Route} from "react-router-dom"
+import {BrowserRouter, Routes, Route, Outlet} from "react-router-dom"
 import { ThemeProvider } from "@/components/theme-provider"
 import Layout from "./components/Layout"
 import Login from "./pages/Login"
-import AuthRequired from "@/components/AuthRequired.tsx";
+import AuthRequired from "@/components/AuthRequired";
 import AddTenants from "./pages/AddTenants"
-import AuthProvider from "@/context/AuthProvider"
+import AuthProvider from "@/context/Auth/AuthProvider"
+import TenantProvider from "@/context/Tenant/TenantProvider"
 
 const App = () => {
   return (
@@ -13,10 +14,15 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login/>}/>
-            {/*<Route path="/layout" element={<Layout/>}/>*/}
             <Route path="/" element={<AuthRequired/>}>
-              <Route path="/setup" element={<AddTenants/>}/>
-              <Route path="/layout" element={<Layout/>}/>
+              <Route element={
+                <TenantProvider>
+                  <Outlet/>
+                </TenantProvider>
+              }>
+                <Route path="/setup" element={<AddTenants/>}/>
+                <Route path="/layout" element={<Layout/>}/>
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>
