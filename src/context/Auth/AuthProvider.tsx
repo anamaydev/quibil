@@ -1,7 +1,7 @@
 import {useState, useEffect, type ReactNode} from "react";
 import {onAuthStateChanged, type User} from "firebase/auth";
-import {auth} from "@/lib/firebase"
-import {AuthContext} from "@/context/AuthContext"
+import {auth} from "@/lib/firebase.ts"
+import {AuthContext} from "@/context/Auth/AuthContext.ts"
 import {signUpWithEmailAndPassword, signInWithGoogle, signInWithMeta, logOut} from "@/services/auth.ts";
 
 const AuthProvider = ({children}: {children: ReactNode}) => {
