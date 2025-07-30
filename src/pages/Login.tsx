@@ -1,5 +1,5 @@
 import {useState, useEffect, type FormEvent} from "react";
-import {useAuthContext} from "@/context/useAuthContext";
+import {useAuthContext} from "@/context/Auth/useAuthContext.ts";
 import {useNavigate} from "react-router-dom";
 
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";

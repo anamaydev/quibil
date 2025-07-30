@@ -9,10 +9,14 @@ const TenantProvider = ({children}: {children: ReactNode}) => {
     lastName: "",
     email: "",
     moveInDate: undefined,
-    flat: ""
+    flat: "",
+    ownerId: ""
   })
-  const [tenants, setTenants] = useState<Tenant[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [tenants, _setTenants] = useState<Tenant[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, _setLoading] = useState(true);
 
   return (
     <TenantContext.Provider value={{tenant, setTenant, tenants, loading, addTenant}}>

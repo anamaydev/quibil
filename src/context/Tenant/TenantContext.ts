@@ -5,8 +5,9 @@ export type Tenant = {
   firstName: string,
   lastName: string,
   email: string,
-  moveInDate: Date | undefined,
+  moveInDate: string | undefined,
   flat: string,
+  ownerId: string | undefined,
 }
 
 type TenantContextType = {
@@ -14,7 +15,7 @@ type TenantContextType = {
   setTenant: Dispatch<SetStateAction<Tenant>>,
   tenants: Tenant[],
   loading: boolean,
-  addTenant: (tenant: Tenant) => Promise<DocumentReference<Tenant>>,
+  addTenant: (tenant: Tenant) => Promise<DocumentReference>,
 }
 
 export const TenantContext = createContext<TenantContextType | undefined>(undefined)
