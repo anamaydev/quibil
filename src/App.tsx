@@ -20,8 +20,9 @@ const App = () => {
                   <Outlet/>
                 </TenantProvider>
               }>
+                <Route index element={<Layout/>}/>
                 <Route path="/setup" element={<AddTenants/>}/>
-                <Route path="/layout" element={<Layout/>}/>
+                {/*<Route path="/layout" element={<Layout/>}/>*/}
               </Route>
             </Route>
           </Routes>

@@ -47,7 +47,8 @@ const Login = () => {
     try{
       const currentUserCredentials = await signInWithGoogle();
       if(currentUserCredentials?.user.metadata.creationTime === currentUserCredentials.user?.metadata.lastSignInTime) navigate("/setup");
-      else navigate("/layout");
+      // else navigate("/layout");
+      else navigate("/");
     }catch(error){
       console.log(error);
     }
@@ -57,7 +58,8 @@ const Login = () => {
     try{
       const currentUserCredentials = await signInWithMeta();
       if(currentUserCredentials?.user.metadata.creationTime === currentUserCredentials.user?.metadata.lastSignInTime) navigate("/setup");
-      else navigate("/layout");
+      // else navigate("/layout");
+      else navigate("/");
     }catch(error){
       console.log(error);
     }

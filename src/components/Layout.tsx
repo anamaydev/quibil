@@ -1,16 +1,12 @@
-import {Link} from "react-router-dom"
-import {useAuthContext} from "@/context/Auth/useAuthContext.ts";
+import Header from "@/components/Header";
 
 const Layout = () => {
-  const {logOut} = useAuthContext();
   return (
-    <main>
-      <div className="pl-2 flex gap-2">
-        <Link to="/login">Login</Link>
-        <Link to="/setup">Add Tenants</Link>
-        <button className="bg-white rounded px-2 text-black cursor-pointer" onClick={logOut}>Log Out</button>
+    <section>
+      <div className="min-h-dvh w-screen p-5 flex flex-col gap-2">
+        <Header/>
       </div>
-    </main>
+    </section>
   )
 }
 export default Layout
