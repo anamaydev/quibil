@@ -1,8 +1,9 @@
-import {useState, type ReactNode} from "react";
+import {useState} from "react";
 import {TenantContext, type Tenant} from "./TenantContext";
 import {addTenant} from "@/services/tenants.ts";
+import {Outlet} from "react-router-dom";
 
-const TenantProvider = ({children}: {children: ReactNode}) => {
+const TenantProvider = () => {
 
   const [tenant, setTenant] = useState<Tenant>({
     firstName: "",
@@ -20,7 +21,8 @@ const TenantProvider = ({children}: {children: ReactNode}) => {
 
   return (
     <TenantContext.Provider value={{tenant, setTenant, tenants, loading, addTenant}}>
-      {children}
+      {/*{children}*/}
+      <Outlet/>
     </TenantContext.Provider>
   )
 }

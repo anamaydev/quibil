@@ -1,5 +1,6 @@
-import {Navigate, Outlet} from 'react-router-dom';
-// import Layout from "@/components/Layout";
+import {Navigate} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
+// import HomeLayout from "@/components/HomeLayout";
 import {useAuthContext} from "@/context/Auth/useAuthContext.ts";
 
 const AuthRequired = () => {
@@ -12,8 +13,9 @@ const AuthRequired = () => {
     return <Navigate to="/login" replace/>;
   }
   else {
-    console.log("Sending user to /Layout");
-    return <Outlet/>;
+    console.log("Sending user to /HomeLayout");
+    // return <Navigate to="/home" replace/>;
+    return <Outlet/>
   }
 }
 export default AuthRequired
