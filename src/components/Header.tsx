@@ -7,7 +7,7 @@ const Header = () => {
   const {logOut} = useAuthContext();
 
   return (
-    <header className="p-4 rounded-xl bg-card flex justify-between items-center">
+    <header className="p-3 rounded-md bg-card flex justify-between items-center">
       <LogoIcon/>
       <div className="flex gap-4">
         <Button

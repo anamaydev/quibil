@@ -7,18 +7,19 @@ import { Label } from "@/components/ui/label"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 
 type DatePickerType = {
+  label: string
   date: Date | undefined,
   setDate: (date: Date | undefined) => void,
 }
 
-const DatePicker = ({date, setDate}: DatePickerType) => {
+const DatePicker = ({label ,date, setDate}: DatePickerType) => {
   const [open, setOpen] = useState<boolean>(false);
   // const [date, setDate] = useState<Date | undefined>(undefined);
 
   return (
     <div className="w-full flex flex-col gap-3">
       <Label htmlFor="date" className="px-1">
-        Move-In Date
+        {label}
       </Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>

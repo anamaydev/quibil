@@ -7,29 +7,28 @@ const Main = () => {
   const {user} = useAuthContext();
 
   return (
-    <main className="flex flex-col gap-6">
+    <main className="flex-grow flex flex-col gap-6">
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl">Hey there, {user?.displayName}!</h1>
         <p className="text-base">Ready to record this month’s readings?</p>
       </div>
 
-      <div>
+      <div className="flex-grow flex flex-col gap-4">
         <div className="flex gap-4">
-
           <NavLink
             to="/home"
             className={({isActive})=>
               isActive ?
-              "underline mb-3 flex gap-2 underline-offset-4":
-              "mb-3 flex gap-2 hover:underline underline-offset-4"
+              "underline flex gap-2 underline-offset-4":
+              "flex gap-2 hover:underline underline-offset-4"
             }
           ><Calculator/> Calculator</NavLink>
           <NavLink
             to="tenants"
             className={({isActive})=>
               isActive ?
-              "underline mb-3 flex gap-2 underline-offset-4":
-              "mb-3 flex gap-2 hover:underline underline-offset-4"
+              "underline flex gap-2 underline-offset-4":
+              "flex gap-2 hover:underline underline-offset-4"
           }
           ><Users/> Tenants</NavLink>
         </div>

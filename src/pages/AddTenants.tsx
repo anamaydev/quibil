@@ -92,7 +92,7 @@ const AddTenants = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <DatePicker date={moveInDate} setDate={setMoveInDate}/>
+                <DatePicker label={"Move In Date"} date={moveInDate} setDate={setMoveInDate}/>
                 <div className="flex flex-col gap-3">
                   <Label className="px-1">Flat</Label>
                   <Input
