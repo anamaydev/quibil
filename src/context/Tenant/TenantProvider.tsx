@@ -1,4 +1,4 @@
-import {useState, useEffect, useMemo} from "react";
+import {useState, useEffect} from "react";
 import {TenantContext, type Tenant} from "./TenantContext";
 import {addTenant, getTenants} from "@/services/tenants.ts";
 import {Outlet} from "react-router-dom";
@@ -27,7 +27,7 @@ const TenantProvider = () => {
       async function handleGetTenants(){
         const snapshot = await getTenants();
         const tenantsData = snapshot.docs.map(doc => (
-          {id: doc.id, ...doc.data()}
+          {id: doc.id, ...doc.data() as Omit<Tenant, "id">}
         ))
 
         setTenants(tenantsData);
