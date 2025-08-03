@@ -3,7 +3,6 @@ import DatePicker from "@/components/DatePicker.tsx";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {type ReadingType} from "@/pages/Calculator";
-import {onAuthStateChanged} from "firebase/auth";
 
 type ReadingsDatePickerProps = {
   label: string;

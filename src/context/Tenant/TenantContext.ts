@@ -1,5 +1,6 @@
 import {createContext, type Dispatch, type SetStateAction} from "react";
 import {type DocumentReference} from "firebase/firestore";
+import type {MonthlyBillType} from "@/pages/Calculator.tsx";
 
 export type Tenant = {
   id?: string;
@@ -17,6 +18,7 @@ type TenantContextType = {
   tenants: Tenant[];
   loading: boolean;
   addTenant: (tenant: Tenant) => Promise<DocumentReference>;
+  addMonthlyBill: (monthlyBill: MonthlyBillType) => Promise<DocumentReference>;
 }
 
 export const TenantContext = createContext<TenantContextType | undefined>(undefined)

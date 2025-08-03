@@ -1,7 +1,8 @@
 import {useState, useEffect, type ChangeEvent} from "react";
-import Readings from "@/components/Readings.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {useTenantContext} from "@/context/Tenant/useTenantContext.ts";
+import Readings from "@/components/Readings";
+import {Button} from "@/components/ui/button";
+import {useTenantContext} from "@/context/Tenant/useTenantContext";
+import {useAuthContext} from "@/context/Auth/useAuthContext";
 import {
   Select,
   SelectContent,
@@ -19,19 +20,35 @@ type ReadingType = {
   lastName: string | undefined;
 }
 
-type TenantBillType = {
-  oldReading: number
+type BeforeMotorBillSplitType = {
+  oldReading: number;
   newReading: number;
   tenantId: string;
   firstName: string;
   lastName: string;
-  elecUnitsConsumed: number;
-  elecUnitsBill: number;
+  unitsConsumed: number;
+  totalUnitsBill: number;
+}
+
+type AfterMotorBillSplitType = BeforeMotorBillSplitType & {
+  finalBill: number;
+}
+
+export type MonthlyBillType = {
+  ownerId: string;
+  month: number;
+  year: number;
+  startDate: string;
+  endDate: string;
+  totalMonthBill: number;
+  ownerBillSplit: number;
+  tenantsBill: AfterMotorBillSplitType[];
 }
 
 
 const Calculator = () => {
-  const {tenants} = useTenantContext();
+  const {tenants, addMonthlyBill} = useTenantContext();
+  const {user} = useAuthContext();
   const [currentMonthBill, setCurrentMonthBill] = useState<number | "">("");
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
@@ -45,6 +62,8 @@ const Calculator = () => {
 
   useEffect(() => {
     console.log("startDate", startDate);
+    console.log("Month", startDate?.getMonth());
+    console.log("Year", startDate?.getFullYear());
   }, [startDate]);
 
   useEffect(() => {
@@ -97,21 +116,66 @@ const Calculator = () => {
     })
   }
 
-  function handleSubmit(){
-    const combined = readings.map((reading) => {
-      if(reading.tenantId === "" || reading.newReading === "" || reading.oldReading === "" || reading.firstName === "" || reading.lastName === "") {
-        /*TODO: throw error and show in the ui*/
-        console.log("please enter all fields");
-        return;
-      }
-      const elecUnitsConsumed = reading.newReading - reading.oldReading;
-      const elecUnitsBill = elecUnitsConsumed * 12;
-      const tenantBill = {...reading, elecUnitsConsumed, elecUnitsBill};
+  async function handleSubmit(){
+
+    /* validating fields */
+    let hasEmptyFields = false;
+
+    /* validating tenants fields */
+    hasEmptyFields = readings.some((reading)=>(
+      reading.tenantId === "" ||
+      reading.newReading === "" ||
+      reading.oldReading === "" ||
+      reading.firstName === "" ||
+      reading.lastName === ""
+    ))
+
+    /* validating user | dates field | currentMotnthlyBill */
+    if(!user || startDate === undefined || endDate === undefined || currentMonthBill === "" || hasEmptyFields){
+      /* TODO: throw error and display on UI */
+      console.log("has empty fields!");
+      return;
+    }
+    /* narrow down types */
+    let totalUnitsConsumed = 0;
+    const uid = user.uid;
+    const start = startDate;
+    const end= endDate;
+
+    const beforeMotorBillSplit: BeforeMotorBillSplitType[] = readings.map((reading) => {
+      const unitsConsumed = Number(reading.newReading) - Number(reading.oldReading);
+      totalUnitsConsumed += unitsConsumed;
+      const totalUnitsBill = unitsConsumed * 12;
+      const tenantBill = {...reading as Omit<BeforeMotorBillSplitType, "unitsConsumed" | "totalUnitsBill">, unitsConsumed, totalUnitsBill};
       console.log("tenantBill: ", tenantBill);
       return tenantBill;
     })
 
-    console.log("combined: ", combined);
+    const remainingBill = Number(currentMonthBill) - (totalUnitsConsumed * 12) ;
+    const motorBillPerTenant = remainingBill / (beforeMotorBillSplit.length + 1);
+    const afterMotorBillSplit = beforeMotorBillSplit.map((reading) => {
+      return {...reading, finalBill: reading.totalUnitsBill + motorBillPerTenant};
+    })
+
+    console.log("beforeMotorBillSplit: ", beforeMotorBillSplit);
+    console.log("afterMotorBillSplit: ", afterMotorBillSplit);
+
+    const monthlyBill = {
+      ownerId: uid,
+      month: start.getMonth(),
+      year: start.getFullYear(),
+      startDate: start.toLocaleDateString(),
+      endDate: end.toLocaleDateString(),
+      totalMonthBill: Number(currentMonthBill),
+      ownerBillSplit: motorBillPerTenant,
+      tenantsBill: [...afterMotorBillSplit],
+    }
+
+    try{
+      await addMonthlyBill(monthlyBill);
+    }catch(error){
+      console.error(error);
+    }
   }
 
   return (

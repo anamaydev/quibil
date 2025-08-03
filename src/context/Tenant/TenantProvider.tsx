@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import {TenantContext, type Tenant} from "./TenantContext";
-import {addTenant, getTenants} from "@/services/tenants.ts";
+import {addMonthlyBill, addTenant, getTenants} from "@/services/tenants.ts";
 import {Outlet} from "react-router-dom";
 
 const TenantProvider = () => {
@@ -42,7 +42,7 @@ const TenantProvider = () => {
   useEffect(()=>console.log("tenants: ", tenants), [tenants]);
 
   return (
-    <TenantContext.Provider value={{tenant, setTenant, tenants, loading, addTenant}}>
+    <TenantContext.Provider value={{tenant, setTenant, tenants, loading, addTenant, addMonthlyBill}}>
       {/*{loading ? <h1>Loading...</h1> : <Outlet/>}*/}
       <Outlet/>
     </TenantContext.Provider>
