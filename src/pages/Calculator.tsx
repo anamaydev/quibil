@@ -116,6 +116,13 @@ const Calculator = () => {
     })
   }
 
+  function handleResetFields(){
+    setReadings([{oldReading: "", newReading: "", tenantId: "", firstName: "", lastName: ""}])
+    setStartDate(undefined);
+    setEndDate(undefined);
+    setCurrentMonthBill("");
+  }
+
   async function handleSubmit(){
 
     /* validating fields */
@@ -173,6 +180,7 @@ const Calculator = () => {
 
     try{
       await addMonthlyBill(monthlyBill);
+      handleResetFields();
     }catch(error){
       console.error(error);
     }
