@@ -17,7 +17,7 @@ type ReadingsReadingProps = {
 
 const Readings = ({children}: {children: JSX.Element[]}) => {
   return (
-    <div className="w-full flex flex-col rounded-xl">
+    <div className="sm:flex-grow w-full flex flex-col rounded-xl">
       {children}
     </div>
   )
@@ -48,7 +48,7 @@ Readings.DatePicker = function ReadingsDatePicker({label, date, setDate}:Reading
 
 Readings.Input = function ReadingsInput({children, value, onChange}: {children: string, value: number|"", onChange: (event: ChangeEvent<HTMLInputElement>) => void}){
   return(
-    <div className="grid w-full max-w-sm items-center gap-3">
+    <div className="grid w-full items-center gap-3">
       <Label>{children}</Label>
       <Input type="number" value={value} onChange={(event)=>onChange(event)}/>
     </div>

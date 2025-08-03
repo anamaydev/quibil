@@ -1,5 +1,5 @@
 import {db} from "@/lib/firebase";
-import {collection, addDoc, getDocs, query, where} from "firebase/firestore";
+import {collection, addDoc, getDocs, query, where, orderBy} from "firebase/firestore";
 import {type Tenant} from "@/context/Tenant/TenantContext";
 import {type MonthlyBillType} from "@/pages/Calculator";
 
@@ -19,6 +19,6 @@ export function addMonthlyBill(monthlyBill: MonthlyBillType){
 }
 
 export function getMonthlyBill(userId: string){
-  const qry = query(monthlyBillRef, where("ownerId", "==", userId));
+  const qry = query(monthlyBillRef, where("ownerId", "==", userId), orderBy("year", "desc"), orderBy("month", "desc"));
   return getDocs(qry);
 }

@@ -19,6 +19,8 @@ type TenantContextType = {
   loading: boolean;
   addTenant: (tenant: Tenant) => Promise<DocumentReference>;
   addMonthlyBill: (monthlyBill: MonthlyBillType) => Promise<DocumentReference>;
+  monthlyBills: MonthlyBillType[];
+  monthlyBillsLoading: boolean;
 }
 
 export const TenantContext = createContext<TenantContextType | undefined>(undefined)

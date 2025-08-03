@@ -1,4 +1,4 @@
-import {useState, useEffect, type ChangeEvent} from "react";
+import {useState, useEffect, type ChangeEvent, useRef} from "react";
 import Readings from "@/components/Readings";
 import {Button} from "@/components/ui/button";
 import {useTenantContext} from "@/context/Tenant/useTenantContext";
@@ -47,7 +47,7 @@ export type MonthlyBillType = {
 
 
 const Calculator = () => {
-  const {tenants, addMonthlyBill} = useTenantContext();
+  const {tenants, addMonthlyBill, monthlyBills, monthlyBillsLoading} = useTenantContext();
   const {user} = useAuthContext();
   const [currentMonthBill, setCurrentMonthBill] = useState<number | "">("");
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
@@ -59,6 +59,14 @@ const Calculator = () => {
     firstName: "",
     lastName: ""
   }]);
+  const latestMonthlyBillRef = useRef<MonthlyBillType | null>(null);
+
+  /* getting the latest monthly bil*/
+  useEffect(() => {
+    if(monthlyBills.length === 0) return
+    latestMonthlyBillRef.current = monthlyBills[0];
+    console.log("latestMonthlyBillRef.current: ", latestMonthlyBillRef.current);
+  }, [monthlyBills]);
 
   useEffect(() => {
     console.log("startDate", startDate);
@@ -137,7 +145,7 @@ const Calculator = () => {
       reading.lastName === ""
     ))
 
-    /* validating user | dates field | currentMotnthlyBill */
+    /* validating user | dates field | currentMonthlyBill */
     if(!user || startDate === undefined || endDate === undefined || currentMonthBill === "" || hasEmptyFields){
       /* TODO: throw error and display on UI */
       console.log("has empty fields!");
@@ -187,7 +195,7 @@ const Calculator = () => {
   }
 
   return (
-    <div className="flex-grow flex w-full">
+    <div className="flex-grow flex flex-col w-full gap-4">
       {/* first card*/}
       <Readings>
         <Readings.Header>Calculator</Readings.Header>
@@ -229,8 +237,24 @@ const Calculator = () => {
           <Button className="cursor-pointer" onClick={handleSubmit}>Submit</Button>
         </Readings.Body>
       </Readings>
+
       {/* the second card goes here */}
+      <div className="w-full">
+        {/* pie chart */}
+        <div className="bg-card h-[200px] rounded-md">
+          {monthlyBillsLoading && <h1>nigga data is loading...</h1>}
+          {!latestMonthlyBillRef.current && <p>No monthly bills yet. Start by calculating one!</p>}
+        </div>
+      </div>
+
     </div>
   )
 }
 export default Calculator
+
+/*
+* TODO:
+*  [] create pie chart
+*  [] create table
+*  [] write re-fetch + re-cache logic
+* */
