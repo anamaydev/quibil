@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import {TenantContext, type Tenant} from "./TenantContext";
 import {addTenant, getTenants, addMonthlyBill, getMonthlyBill} from "@/services/tenants.ts";
 import {Outlet} from "react-router-dom";
@@ -21,6 +21,39 @@ const TenantProvider = () => {
   const [monthlyBills, setMonthlyBills] = useState<MonthlyBillType[]>([]);
   const [monthlyBillsLoading, setMonthlyBillsLoading] = useState<boolean>(true);
 
+  async function fetchTenants(){
+    try{
+      const snapshot = await getTenants();
+      const tenantsData = snapshot.docs.map(doc => (
+        {id: doc.id, ...doc.data() as Omit<Tenant, "id">}
+      ))
+
+      setTenants(tenantsData);
+      setLoading(false);
+      sessionStorage.setItem("tenantsData", JSON.stringify(tenantsData));
+    }catch(err){
+      console.error(err);
+      setLoading(false);
+    }
+  }
+
+  const fetchMonthlyBills = useCallback(async () => {
+    if(!user) return;
+    const uid = user.uid;
+
+    try {
+      const snapshot = await getMonthlyBill(uid);
+      const monthlyBillsData = snapshot.docs.map(doc => (
+        {id: doc.id, ...doc.data() as Omit<MonthlyBillType, "id">}
+      ))
+      setMonthlyBills(monthlyBillsData);
+      setMonthlyBillsLoading(false);
+      sessionStorage.setItem("monthlyBills", JSON.stringify(monthlyBillsData));
+    }catch(err){
+      console.error(err);
+      setMonthlyBillsLoading(false);
+    }
+  }, [user])
 
   /* getting tenants from firestore */
   useEffect(() => {
@@ -30,22 +63,8 @@ const TenantProvider = () => {
       setLoading(false);
     }
     else{
-      async function handleGetTenants(){
-        try{
-          const snapshot = await getTenants();
-          const tenantsData = snapshot.docs.map(doc => (
-            {id: doc.id, ...doc.data() as Omit<Tenant, "id">}
-          ))
-
-          setTenants(tenantsData);
-          setLoading(false);
-          sessionStorage.setItem("tenantsData", JSON.stringify(tenantsData));
-        }catch(err){
-          console.error(err);
-          setLoading(false);
-        }
-      }
-      handleGetTenants();
+      /* void to suppress ESLint warning of returned Promise is ignored*/
+      void fetchTenants();
     }
   }, []);
 
@@ -53,37 +72,20 @@ const TenantProvider = () => {
 
   /* getting monthly bills from firestore */
   useEffect(() => {
-    if(!user) return;
-    const uid = user.uid;
-
     const cached = sessionStorage.getItem("monthlyBills");
     if(cached){
       setMonthlyBills(JSON.parse(cached));
       setMonthlyBillsLoading(false);
     }else{
-      async function handleGetMonthlyBills(){
-        try {
-          const snapshot = await getMonthlyBill(uid);
-          const monthlyBillsData = snapshot.docs.map(doc => (
-            {id: doc.id, ...doc.data() as Omit<MonthlyBillType, "id">}
-          ))
-          setMonthlyBills(monthlyBillsData);
-          setMonthlyBillsLoading(false);
-          sessionStorage.setItem("monthlyBills", JSON.stringify(monthlyBillsData));
-        }catch(err){
-          console.error(err);
-          setMonthlyBillsLoading(false);
-        }
-      }
-
-      handleGetMonthlyBills();
+      /* void to suppress ESLint warning of returned Promise is ignored*/
+      void fetchMonthlyBills();
     }
-  }, [user]);
+  }, [fetchMonthlyBills]);
 
   useEffect(() => console.log("monthlyBills: ", monthlyBills), [monthlyBills]);
 
   return (
-    <TenantContext.Provider value={{tenant, setTenant, tenants, loading, addTenant, addMonthlyBill, monthlyBills, monthlyBillsLoading}}>
+    <TenantContext.Provider value={{tenant, setTenant, tenants, loading, addTenant, addMonthlyBill, monthlyBills, monthlyBillsLoading, fetchMonthlyBills, fetchTenants}}>
       {/*{loading ? <h1>Loading...</h1> : <Outlet/>}*/}
       <Outlet/>
     </TenantContext.Provider>

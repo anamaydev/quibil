@@ -5,13 +5,7 @@ import ResultTable from "@/components/ResultTable";
 import {Button} from "@/components/ui/button";
 import {useTenantContext} from "@/context/Tenant/useTenantContext";
 import {useAuthContext} from "@/context/Auth/useAuthContext";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
 import {Plus} from "lucide-react";
 
 type ReadingType = {
@@ -49,7 +43,7 @@ export type MonthlyBillType = {
 
 
 const Calculator = () => {
-  const {tenants, addMonthlyBill, monthlyBills, monthlyBillsLoading} = useTenantContext();
+  const {tenants, addMonthlyBill, monthlyBills, monthlyBillsLoading, fetchMonthlyBills} = useTenantContext();
   const {user} = useAuthContext();
   const [currentMonthBill, setCurrentMonthBill] = useState<number | "">("");
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
@@ -198,7 +192,10 @@ const Calculator = () => {
     }
 
     try{
+      /* add data to firestore */
       await addMonthlyBill(monthlyBill);
+      /* get latest data from firestore */
+      await fetchMonthlyBills();
       handleResetFields();
     }catch(error){
       console.error(error);
