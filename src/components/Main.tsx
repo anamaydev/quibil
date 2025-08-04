@@ -17,10 +17,11 @@ const Main = () => {
         <div className="flex gap-4">
           <NavLink
             to="/home"
+            end
             className={({isActive})=>
               isActive ?
               "underline flex gap-2 underline-offset-4":
-              "flex gap-2 hover:underline underline-offset-4"
+              "flex gap-2 hover:underline underline-offset-4 opacity-50"
             }
           ><Calculator/> Calculator</NavLink>
           <NavLink
@@ -28,8 +29,8 @@ const Main = () => {
             className={({isActive})=>
               isActive ?
               "underline flex gap-2 underline-offset-4":
-              "flex gap-2 hover:underline underline-offset-4"
-          }
+              "flex gap-2 hover:underline underline-offset-4 opacity-50"
+            }
           ><Users/> Tenants</NavLink>
         </div>
         <Separator/>
