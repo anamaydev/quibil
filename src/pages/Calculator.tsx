@@ -1,5 +1,6 @@
-import {useState, useEffect, type ChangeEvent, useRef} from "react";
+import {useState, useEffect, type ChangeEvent} from "react";
 import Readings from "@/components/Readings";
+import ResultChart from "@/components/ResultChart.tsx";
 import {Button} from "@/components/ui/button";
 import {useTenantContext} from "@/context/Tenant/useTenantContext";
 import {useAuthContext} from "@/context/Auth/useAuthContext";
@@ -30,7 +31,7 @@ type BeforeMotorBillSplitType = {
   totalUnitsBill: number;
 }
 
-type AfterMotorBillSplitType = BeforeMotorBillSplitType & {
+export type AfterMotorBillSplitType = BeforeMotorBillSplitType & {
   finalBill: number;
 }
 
@@ -59,14 +60,23 @@ const Calculator = () => {
     firstName: "",
     lastName: ""
   }]);
-  const latestMonthlyBillRef = useRef<MonthlyBillType | null>(null);
+  const [latestMonthlyBill, setLatestMonthlyBill] = useState<MonthlyBillType | null>(null);
+  const [pieChartData, setPieChartData] = useState<AfterMotorBillSplitType[] | []>([]);
 
   /* getting the latest monthly bil*/
   useEffect(() => {
     if(monthlyBills.length === 0) return
-    latestMonthlyBillRef.current = monthlyBills[0];
-    console.log("latestMonthlyBillRef.current: ", latestMonthlyBillRef.current);
+    setLatestMonthlyBill(monthlyBills[0]);
+    setPieChartData(monthlyBills[0].tenantsBill);
   }, [monthlyBills]);
+
+  useEffect(() => {
+    console.log("latestMonthlyBill", latestMonthlyBill);
+  }, [latestMonthlyBill]);
+
+  useEffect(() => {
+    console.log("pieChartData", pieChartData);
+  }, [pieChartData]);
 
   useEffect(() => {
     console.log("startDate", startDate);
@@ -195,7 +205,8 @@ const Calculator = () => {
   }
 
   return (
-    <div className="flex-grow flex flex-col w-full gap-4">
+    // <div className="flex-grow flex flex-col sm:flex-row w-full gap-4">
+    <div className="flex-grow grid md:grid-cols-[minmax(19rem,21rem)_2fr] w-full gap-4">
       {/* first card*/}
       <Readings>
         <Readings.Header>Calculator</Readings.Header>
@@ -241,12 +252,12 @@ const Calculator = () => {
       {/* the second card goes here */}
       <div className="w-full">
         {/* pie chart */}
-        <div className="bg-card h-[200px] rounded-md">
-          {monthlyBillsLoading && <h1>nigga data is loading...</h1>}
-          {!latestMonthlyBillRef.current && <p>No monthly bills yet. Start by calculating one!</p>}
-        </div>
+        <>
+          {monthlyBillsLoading && <h1>loading...</h1>}
+          <ResultChart latestMonthlyBill={latestMonthlyBill}/>
+        </>
+        {/* table goes here */}
       </div>
-
     </div>
   )
 }
@@ -254,7 +265,8 @@ export default Calculator
 
 /*
 * TODO:
-*  [] create pie chart
 *  [] create table
 *  [] write re-fetch + re-cache logic
+*
+*  [x] create pie chart
 * */
