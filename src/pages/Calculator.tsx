@@ -1,6 +1,7 @@
 import {useState, useEffect, type ChangeEvent} from "react";
 import Readings from "@/components/Readings";
-import ResultChart from "@/components/ResultChart.tsx";
+import ResultChart from "@/components/ResultChart";
+import ResultTable from "@/components/ResultTable";
 import {Button} from "@/components/ui/button";
 import {useTenantContext} from "@/context/Tenant/useTenantContext";
 import {useAuthContext} from "@/context/Auth/useAuthContext";
@@ -250,13 +251,14 @@ const Calculator = () => {
       </Readings>
 
       {/* the second card goes here */}
-      <div className="w-full">
+      <div className="flex flex-col w-full gap-4 min-w-0">
         {/* pie chart */}
         <>
           {monthlyBillsLoading && <h1>loading...</h1>}
           <ResultChart latestMonthlyBill={latestMonthlyBill}/>
         </>
         {/* table goes here */}
+        <ResultTable latestMonthlyBill={latestMonthlyBill}/>
       </div>
     </div>
   )

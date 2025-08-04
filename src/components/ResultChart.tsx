@@ -4,10 +4,10 @@ import {ChartContainer, ChartTooltip, ChartTooltipContent,} from "@/components/u
 import {type ChartConfig} from "@/components/ui/chart";
 import type {AfterMotorBillSplitType, MonthlyBillType} from "@/pages/Calculator";
 
-const ResultChartOld = ({latestMonthlyBill}:{latestMonthlyBill: MonthlyBillType | null}) => {
+const ResultChart = ({latestMonthlyBill}:{latestMonthlyBill: MonthlyBillType | null}) => {
   if(!latestMonthlyBill) return (
-    <Card className="flex flex-col">
-      <CardHeader className="min-h-[250px] aspect-square items-center pb-0">
+    <Card className="flex h-full flex-col">
+      <CardHeader className="justify-center items-center pb-0">
         <CardDescription>Nothing to show here.</CardDescription>
       </CardHeader>
     </Card>
@@ -52,7 +52,7 @@ const ResultChartOld = ({latestMonthlyBill}:{latestMonthlyBill: MonthlyBillType 
 
   return (
     <Card className="flex flex-col">
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex-1 pb-0 px-2">
         <CardHeader className="items-center pb-0">
           <CardTitle>Pie Chart - Units Consumed</CardTitle>
           <CardDescription>{`${months[latestMonthlyBill.month]} - ${months[latestMonthlyBill.month+1]} ${latestMonthlyBill.year}`}</CardDescription>
@@ -83,4 +83,4 @@ const ResultChartOld = ({latestMonthlyBill}:{latestMonthlyBill: MonthlyBillType 
     </Card>
   )
 }
-export default ResultChartOld
+export default ResultChart
