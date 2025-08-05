@@ -220,7 +220,7 @@ const Calculator = () => {
             {readings.map((_, index) => {
                 return (
                   <Readings.Reading key={index} index={index}>
-                    <Select onValueChange={(value)=>handleSelectTenant(index, value)}>
+                    <Select value={readings[index].tenantId} onValueChange={(value)=>handleSelectTenant(index, value)}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Tenant name" />
                       </SelectTrigger>
