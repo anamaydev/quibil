@@ -21,9 +21,17 @@ const TenantProvider = () => {
   const [monthlyBills, setMonthlyBills] = useState<MonthlyBillType[]>([]);
   const [monthlyBillsLoading, setMonthlyBillsLoading] = useState<boolean>(true);
 
-  async function fetchTenants(){
+  /*
+  - Every re-render -> functions are recreated from scratch -> so they get new reference in the memory.
+  - since the function is new every render, the useEffect runs every time since the function is in dependency array.
+  - To avoid: using useCallback.
+  - Without useCallback, it would be recreated on every render, and cause useEffect to run unnecessarily */
+  const fetchTenants = useCallback(async () => {
     try{
-      const snapshot = await getTenants();
+      if(!user) return;
+      const uid = user.uid;
+
+      const snapshot = await getTenants(uid);
       const tenantsData = snapshot.docs.map(doc => (
         {id: doc.id, ...doc.data() as Omit<Tenant, "id">}
       ))
@@ -35,7 +43,7 @@ const TenantProvider = () => {
       console.error(err);
       setLoading(false);
     }
-  }
+  },[user])
 
   const fetchMonthlyBills = useCallback(async () => {
     if(!user) return;
@@ -66,7 +74,7 @@ const TenantProvider = () => {
       /* void to suppress ESLint warning of returned Promise is ignored*/
       void fetchTenants();
     }
-  }, []);
+  }, [fetchTenants]);
 
   useEffect(()=>console.log("tenants: ", tenants), [tenants]);
 

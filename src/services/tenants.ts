@@ -10,8 +10,10 @@ export function addTenant(tenantData: Tenant){
   return addDoc(tenantsRef, tenantData);
 }
 
-export function getTenants(){
-  return getDocs(tenantsRef);
+export function getTenants(userId: string){
+  // return getDocs(tenantsRef);
+  const qry = query(tenantsRef, where("ownerId", "==", userId))
+  return getDocs(qry);
 }
 
 export function addMonthlyBill(monthlyBill: MonthlyBillType){
