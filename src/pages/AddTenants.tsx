@@ -112,7 +112,7 @@ const AddTenants = () => {
       <Button
         className="flex gap-0.5 justify-center items-center"
         variant={"secondary"}
-        onClick={()=> navigate("/layout")}
+        onClick={()=> navigate("/")}
       >
         <span>Next</span>
         <ChevronRight className="translate-y-[1px]"/>
