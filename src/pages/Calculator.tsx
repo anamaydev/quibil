@@ -8,7 +8,7 @@ import {useAuthContext} from "@/context/Auth/useAuthContext";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
 import {Plus} from "lucide-react";
 
-type ReadingType = {
+export type ReadingType = {
   oldReading: number | "";
   newReading: number | "";
   tenantId: string;

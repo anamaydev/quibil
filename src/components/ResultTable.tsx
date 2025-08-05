@@ -1,6 +1,6 @@
-import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table";
 import {Card, CardContent, CardHeader, CardTitle, CardDescription}  from "@/components/ui/card";
-import type {AfterMotorBillSplitType, MonthlyBillType} from "@/pages/Calculator";
+import type {MonthlyBillType} from "@/pages/Calculator";
 
 const ResultTable = ({latestMonthlyBill}:{latestMonthlyBill: MonthlyBillType | null}) => {
   if(!latestMonthlyBill) return (
