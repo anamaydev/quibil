@@ -67,7 +67,7 @@ const Login = () => {
 
   return (
     <main className="relative min-h-dvh flex justify-center items-center px-6">
-      <Logo className="absolute top-20" />
+      <Logo className="absolute top-16" />
       <Card className="w-full max-w-sm flex flex-col">
         <CardHeader className="w-full">
           <CardTitle className="font-semibold text-2xl">Create an account</CardTitle>
